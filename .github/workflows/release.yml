@@ -1,10 +1,9 @@
 name: CI
 
 on:
-#  release:
-#    types: [published]
-  - push
-
+  push:
+    tags:
+      - '*'
 
 jobs:
   release:
@@ -13,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -30,5 +29,10 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-dev --no-interaction
 
-      - name: Install build phar
+      - name: Build phar
         run: composer phar:build
+
+      - name: Upload phar to release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ github.ref }} diffy.phar
