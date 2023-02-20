@@ -36,12 +36,14 @@ jobs:
       - name: Build phar file
         run: composer phar:build
 
-#      - name: Upload phar to release
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        run: gh release upload ${{ github.ref_name }} diffy.phar
+      - name: Upload phar to release
+        if: ${{ github.ref_name != 'master' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ github.ref_name }} diffy.phar
 
       - name: Archive diffy.phar
+        if: ${{ github.ref_name == 'master' }}
         uses: actions/upload-artifact@v3
         with:
           name: diffy.phar
