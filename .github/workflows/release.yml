@@ -6,10 +6,11 @@ on:
       - '*'
 
 jobs:
-  release:
-    name: "Release"
+  publish:
+    name: "Publish phar file"
     runs-on: "ubuntu-latest"
-    permissions: write-all
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
@@ -30,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-dev --no-interaction
 
-      - name: Build phar
+      - name: Build phar file
         run: composer phar:build
 
       - name: Upload phar to release
