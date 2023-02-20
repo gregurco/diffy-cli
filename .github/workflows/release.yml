@@ -23,3 +23,12 @@ jobs:
 
       - name: Run linter
         run: composer test
+
+      - name: Install humbug/box
+        run: composer phar:install-tools
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-dev --no-interaction
+
+      - name: Install build phar
+        run: composer phar:build
